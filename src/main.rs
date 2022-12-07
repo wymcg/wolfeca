@@ -80,5 +80,8 @@ fn main() {
         }
     }
 
-    image.save(args.filename);
+    match image.save(args.filename) {
+        Ok(_) => {/* do nothing */}
+        Err(e) => {println!("Failed to generate image: {e}")}
+    }
 }
