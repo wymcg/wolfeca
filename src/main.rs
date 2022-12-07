@@ -39,7 +39,7 @@ fn main() {
     let mut next_state: Vec<bool> = Vec::new();
 
 
-    if (args.random_seed == "") {
+    if args.random_seed == "" {
         // setup the current state
         for _ in 0..args.width {
             next_state.push(false);
