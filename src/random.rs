@@ -1,4 +1,3 @@
-use clap::error::ContextValue::Bool;
 use rand::Rng;
 use rand_seeder::Seeder;
 use rand_pcg::Pcg64;
