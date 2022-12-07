@@ -1,7 +1,9 @@
 mod wolfcode;
+mod random;
 
 use clap::Parser;
 use image::{RgbImage, Rgb};
+use crate::random::generate_random;
 use crate::wolfcode::get_next_state_from_local_state;
 
 #[derive(Parser, Debug)]
@@ -22,6 +24,10 @@ struct Args {
     /// Specify filename
     #[arg(short, long)]
     filename: String,
+
+    /// Specify seed string
+    #[arg(short, long, default_value = "")]
+    random_seed: String,
 }
 
 fn main() {
@@ -32,14 +38,19 @@ fn main() {
     let mut current_state: Vec<bool>;
     let mut next_state: Vec<bool> = Vec::new();
 
-    // setup the current state
-    for _ in 0..args.width {
-        next_state.push(false);
-    }
 
-    // set the initial cell in the center
-    let state_center = next_state.len() / 2;
-    next_state[state_center] = true;
+    if (args.random_seed == "") {
+        // setup the current state
+        for _ in 0..args.width {
+            next_state.push(false);
+        }
+
+        // set the initial cell in the center
+        let state_center = next_state.len() / 2;
+        next_state[state_center] = true;
+    }  else {
+        next_state = generate_random(args.random_seed, args.width);
+    }
 
     // create the image
     let mut image = RgbImage::new(args.width, args.steps);
@@ -68,7 +79,6 @@ fn main() {
             next_state[i] = get_next_state_from_local_state(args.code, left, center, right);
         }
     }
-
 
     image.save(args.filename);
 }
